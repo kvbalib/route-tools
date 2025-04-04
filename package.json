@@ -1,0 +1,55 @@
+{
+  "name": "route-tools",
+  "version": "0.1.0",
+  "description": "A utility toolkit for managing routes with full type safety in TypeScript applications. route-tools helps you generate URL paths from route names and parameters without worrying about typos or mismatched params. It's designed to work seamlessly with front-end frameworks like React (including React Router) and React Native (React Navigation), as well as Node.js backends, ensuring your routes stay consistent across your project.",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "scripts": {
+    "prepublish": "npm run build",
+    "---------------------------PROJECT BUILD----------------------": "",
+    "build:cjs": "tsc -p tsconfig-cjs.json",
+    "build:esm": "tsc -p tsconfig.json",
+    "build": "npm run build:cjs && npm run build:esm",
+    "---------------------------DEBUG & FORMAT----------------------": "",
+    "format": "prettier --write \"**/*.{json,js,ts}\"",
+    "------------------------------PUBLISH--------------------------": "",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "publish": "npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kvbalib/route-tools.git"
+  },
+  "keywords": [
+    "react-native",
+    "react",
+    "node",
+    "route",
+    "react router",
+    "react-router",
+    "react-router-dom",
+    "react-router-native",
+    "react-router-native-dom",
+    "react-router-native-web",
+    "react-router-native-web-dom",
+    "react navigation",
+    "prepare route"
+  ],
+  "author": "kvbalib",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kvbalib/route-tools/issues"
+  },
+  "homepage": "https://github.com/kvbalib/route-tools#readme",
+  "dependencies": {
+    "qs": "^6.14.0"
+  },
+  "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
+    "@types/qs": "^6.9.18",
+    "prettier": "^3.5.3",
+    "typescript": "~5.3.3"
+  }
+}
