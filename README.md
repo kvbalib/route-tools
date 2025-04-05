@@ -31,7 +31,7 @@ import init from 'route-tools'
 // 1. Define a type mapping each route to its params (or undefined if none).
 type AppRoutes = {
   home: undefined;
-  userProfile: { userId: string };
+  userProfile: { userId: number };
   search: { query?: string }; // search has an optional query param
 }
 
@@ -49,8 +49,8 @@ const { prepareRoute } = init<AppRoutes>(routes)
 const homePath = prepareRoute('home')
 // returns "/home"
 
-const profilePath = prepareRoute('userProfile', { params: { userId: '42' } })
-// returns "/user/42"
+const profilePath = prepareRoute('userProfile', { params: { userId: 420 } })
+// returns "/user/420"
 
 const searchPath = prepareRoute('search', { params: {}, query: { q: 'test', page: 2 } })
 // returns "/search?q=test&page=2"
@@ -97,14 +97,14 @@ In this pattern:
 This setup is particularly useful for **deep linking**. For example, to open a specific screen via a deep link:
 
 ```ts
-const url = prepareRoute.stack('ProfileScreen', { params: { userId: '123' } })
+const url = prepareRoute.stack('ProfileScreen', { params: { userId: 123 } })
 Linking.openURL(`myapp://app${url}`)  // opens "ProfileScreen" with the userId
 ```
 
 Or, to navigate within your app:
 
 ```ts
-navigation.navigate('ProfileScreen', { userId: '123' })
+navigation.navigate('ProfileScreen', { userId: 123 })
 // (React Navigation will use the defined route patterns internally)
 ```
 
@@ -118,7 +118,7 @@ Initializes a route utility object for a given set of routes.
   ```ts
   type ParamList = {
     home: undefined;
-    profile: { userId: string };
+    profile: { userId: number };
     search: { query?: string };
   }
   ```
@@ -151,7 +151,7 @@ A `string` representing the fully constructed path. All dynamic segments (e.g., 
 
 - For a route definition `profile: '/user/:userId'` and `ParamList['profile'] = { userId: string }`:
   ```ts
-  prepareRoute('profile', { params: { userId: 'abc123' } })
+  prepareRoute('profile', { params: { userId: 123 } })
   // returns "/user/abc123"
   ```
 - For a route definition `search: '/search'` (with no dynamic segments) and `ParamList['search'] = undefined`:
