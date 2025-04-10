@@ -1,6 +1,6 @@
 {
   "name": "route-tools",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A utility toolkit for managing routes with full type safety in TypeScript applications. route-tools helps you generate URL paths from route names and parameters without worrying about typos or mismatched params. It's designed to work seamlessly with front-end frameworks like React (including React Router) and React Native (React Navigation), as well as Node.js backends, ensuring your routes stay consistent across your project.",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
