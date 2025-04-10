@@ -1,6 +1,5 @@
-import { pathToRegexp } from 'path-to-regexp'
-
 import { convertLegacyRoute } from './convertLegacyRoutes'
+import { pathToRegexp } from 'path-to-regexp'
 
 /**
  * Checks if a given path matches a specific pattern.

@@ -1,5 +1,6 @@
-import type { RouteDefinitions, RouteParamList } from './index.types'
 import { matchPath } from './utils/matchPath'
+
+import type { RouteDefinitions, RouteParamList } from './index.types'
 
 /**
  * Checks if a given `href` corresponds to one of the defined application routes.

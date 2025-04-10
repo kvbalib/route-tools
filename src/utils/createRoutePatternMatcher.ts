@@ -1,6 +1,5 @@
-import { match } from 'path-to-regexp'
-
 import { convertLegacyRoute } from './convertLegacyRoutes'
+import { match } from 'path-to-regexp'
 
 /**
  * Creates a route pattern matcher using path-to-regexp.

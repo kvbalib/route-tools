@@ -1,7 +1,8 @@
-import type { PrepareRouteOptions, RouteDefinitions, RouteParamList } from './index.types'
 import { isAppPath } from './isAppPath'
 import { parseHref } from './parseHref'
 import { prepareRoute } from './prepareRoute'
+
+import type { PrepareRouteOptions, RouteDefinitions, RouteParamList } from './index.types'
 
 /**
  * Creates a typed route path generator function for a given set of routes.

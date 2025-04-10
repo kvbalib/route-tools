@@ -1,7 +1,7 @@
+import { createRoutePatternMatcher } from './utils/createRoutePatternMatcher'
 import qs, { ParsedQs } from 'qs'
 
 import type { RouteDefinitions, RouteParamList } from './index.types'
-import { createRoutePatternMatcher } from './utils/createRoutePatternMatcher'
 
 /**
  * Parses a given `href` (URL or path) and extracts the route name, parameters, and query string.
