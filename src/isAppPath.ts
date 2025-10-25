@@ -29,5 +29,9 @@ export function isAppPath<ParamList extends RouteParamList>(
   if (path === '') path = '/' // Treat empty path as root
 
   // Check if the normalized path matches any route pattern
-  return Object.values(routeDefinitions).some((pattern) => matchPath(pattern, path))
+  for (const key in routeDefinitions) {
+    const pattern = routeDefinitions[key]
+    if (matchPath(pattern, path)) return true
+  }
+  return false
 }

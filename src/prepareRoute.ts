@@ -11,11 +11,15 @@ import type { PrepareRouteOptions, RouteDefinitions, RouteParamList } from './in
  * @param options - Optional parameters and query for the route.
  * @returns The generated path string.
  */
-export function prepareRoute<ParamList extends RouteParamList, Name extends keyof ParamList>(
-  routeDefinitions: RouteDefinitions<ParamList>,
+export function prepareRoute<
+  ParamList extends RouteParamList,
+  Defs extends RouteDefinitions<ParamList>,
+  Name extends keyof ParamList,
+>(
+  routeDefinitions: Defs,
   routeName: Name,
   options?: PrepareRouteOptions<ParamList, Name>
-): string {
+): Defs[Name] {
   try {
     const template = routeDefinitions[routeName]
 
@@ -68,7 +72,7 @@ export function prepareRoute<ParamList extends RouteParamList, Name extends keyo
       finalPath += queryString
     }
 
-    return finalPath
+    return finalPath as Defs[Name]
   } catch (err) {
     console.error(`Error in prepareRoute for "${String(routeName)}":`, err)
     return routeDefinitions[routeName]
