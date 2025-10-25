@@ -1,3 +1,5 @@
+import type { ParsedQs } from 'qs'
+
 /**
  * Generic mapping of route keys to their path parameter types.
  * - If a route has parameters, map it to an object type describing the parameters.
@@ -10,7 +12,7 @@
  *   search: { query?: string };
  * };
  */
-export type RouteParamList = Record<string, unknown>
+export type RouteParamList = object
 
 /**
  * Type for the route definitions object mapping route keys to path templates.
@@ -34,5 +36,5 @@ export type PrepareRouteOptions<
   ParamList extends RouteParamList,
   R extends keyof ParamList,
 > = undefined extends ParamList[R]
-  ? { params?: never; query?: qs.ParsedQs }
-  : { params: ParamList[R]; query?: qs.ParsedQs }
+  ? { params?: never; query?: ParsedQs }
+  : { params: ParamList[R]; query?: ParsedQs }

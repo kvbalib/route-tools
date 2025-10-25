@@ -36,14 +36,15 @@ type AppRoutes = {
 }
 
 // 2. Define route templates with dynamic segments (`:param` for required, `:param?` for optional).
-const routes: Record<keyof AppRoutes, string> = {
+// IMPORTANT: use `as const` to preserve string literal types
+const routes = {
   home: '/home',
   userProfile: '/user/:userId',
   search: '/search/:query?', // (optional param in path)
-}
+} as const
 
 // 3. Initialize route-tools with the route definitions.
-const { prepareRoute } = init<AppRoutes>(routes)
+const { prepareRoute } = init<AppRoutes>(routes) // Defs inferred from `routes`
 
 // 4. Generate paths using the prepared function:
 const homePath = prepareRoute('home')
@@ -112,6 +113,8 @@ navigation.navigate('ProfileScreen', { userId: 123 })
 
 ### `init<ParamList>(routeDefinitions)`
 
+Note on types: to preserve string literal return types for prepareRoute, ensure your `routeDefinitions` object is declared with `as const` so TypeScript doesn’t widen values to `string`. If your setup doesn’t preserve literals, you can pass both generics `init<ParamList, typeof ROUTES>(ROUTES)` as a fallback.
+
 Initializes a route utility object for a given set of routes.
 
 - **`ParamList`**: A TypeScript type mapping each route name to its parameter type. Use `undefined` for routes without parameters. For example:
@@ -145,7 +148,10 @@ Generates a complete path string for the given route name by substituting dynami
     - **`query`**: An optional object containing query string parameters to append to the URL.
 
 **Returns:**  
-A `string` representing the fully constructed path. All dynamic segments (e.g., `:userId`) are replaced with values from `params`. Optional segments (marked with `?`) are omitted if no value is provided, and any provided `query` object is serialized into a query string.
+- If your `routeDefinitions` object is declared with `as const`, the return type is the exact string literal for that route (e.g., `"/welcome"`), which plays nicely with consumers like `expo-router`'s `<Link href=... />`.
+- Otherwise, the return type is `string`.
+
+All dynamic segments (e.g., `:userId`) are replaced with values from `params`. Optional segments (marked with `?`) are omitted if no value is provided, and any provided `query` object is serialized into a query string.
 
 **Examples:**
 
@@ -169,6 +175,55 @@ A `string` representing the fully constructed path. All dynamic segments (e.g., 
   ```
 
 Internally, `prepareRoute` leverages the [**qs** library](https://www.npmjs.com/package/qs) to handle serialization of the `query` object, supporting nested objects and arrays.
+
+## Preserving literal return types
+
+By design, `prepareRoute` can return exact string literals like "/welcome". To get those literals (instead of plain `string`), make sure your route definitions are not widened by TypeScript.
+
+Recommended:
+- Declare your routes with `as const` so the values stay literal.
+- Avoid annotating routes as `Record<..., string>` because that widens values to `string`.
+- Optionally, use `satisfies` to keep key checking without widening values.
+
+Examples:
+
+```ts
+// Good — literals preserved
+const ROUTES = {
+  WELCOME: '/welcome',
+  ITEM: '/item/:slug',
+} as const
+
+const RouteTools = init<IRoutesParams>(ROUTES)
+const href = RouteTools.prepareRoute('WELCOME')
+//    ^? type is '/welcome'
+```
+
+```ts
+// Good — literals preserved and keys checked via satisfies
+const ROUTES = {
+  WELCOME: '/welcome',
+  ITEM: '/item/:slug',
+} as const satisfies RouteDefinitions<IRoutesParams>
+```
+
+```ts
+// Not ideal — values widened to string
+const ROUTES: Record<keyof IRoutesParams, string> = {
+  WELCOME: '/welcome',
+  ITEM: '/item/:slug',
+}
+const RouteTools = init<IRoutesParams>(ROUTES)
+const href = RouteTools.prepareRoute('WELCOME')
+//    ^? type is string
+```
+
+If your setup still widens types (e.g., due to upstream typing), you can pass both generics explicitly as a fallback:
+
+```ts
+const RouteTools = init<IRoutesParams, typeof ROUTES>(ROUTES)
+// prepareRoute now returns the precise literal type
+```
 
 ## Type Safety Advantages
 

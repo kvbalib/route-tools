@@ -22,7 +22,9 @@ export function parseHref<ParamList extends RouteParamList>(
   const queryString = url.search.startsWith('?') ? url.search.substring(1) : url.search
   const query = qs.parse(queryString) // parse query string into ParsedQs object
 
-  for (const [routeName, pattern] of Object.entries(routeDefinitions)) {
+  for (const key in routeDefinitions) {
+    const routeName = key as keyof ParamList
+    const pattern = routeDefinitions[routeName]
     const matcher = createRoutePatternMatcher(pattern)
 
     if (!matcher) continue // Skip if matcher creation failed
