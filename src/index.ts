@@ -16,9 +16,9 @@ export function createRoutePrepare<
   return function <Name extends keyof ParamList>(
     ...args: PrepareArgs<ParamList, Name>
   ): Defs[Name] {
-    // Normalize args for the runtime implementation
-    const [routeName, options] = args as unknown as [Name, PrepareRouteOptions<ParamList, Name>]
-    return prepareRoute(routeDefinitions, routeName, options)
+    const [routeName, options] = args
+    // Normalize options, only for the runtime implementation (this is obscured inside the package)
+    return prepareRoute<ParamList, Defs, Name>(routeDefinitions, routeName, options as PrepareRouteOptions<ParamList, Name>)
   }
 }
 
